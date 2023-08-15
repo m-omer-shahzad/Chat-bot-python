@@ -1,2 +1,12 @@
-# Chat-bot-python
-Ai chatBot that read your custom docunment and answer accordingly
+## Create a virtual environment
+```
+    source -m venv env_name
+```
+## Activate the Environment
+```
+    source env_name/bin/activate
+```
+## Deactivate an environment
+```
+    deactivate
+```
