@@ -56,7 +56,7 @@ print('Welcome to the DocBot. You are now ready to start interacting with your d
 print('---------------------------------------------------------------------------------')
 while True:
     query = input(f"{green}Question: ")
-    if query == "exit" or query == "quit" or query == "q" or query == "f":
+    if query == "exit" or query == "quit" or query == "q":
         print('Exiting')
         sys.exit()
     if query == '':
