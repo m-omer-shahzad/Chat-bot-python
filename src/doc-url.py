@@ -2,24 +2,32 @@ import os
 import sys
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
-from langchain.document_loaders import (CSVLoader, Docx2txtLoader, PyPDFLoader, TextLoader)
+from langchain.document_loaders import (
+    CSVLoader, Docx2txtLoader, PyPDFLoader, TextLoader)
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.llms import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from colors import green, white, yellow
+from langchain.document_loaders import UnstructuredURLLoader
 
 load_dotenv()
 
 os.environ["OPENAI_API_KEY"]
-
 documents = []
 
+urls = ["https://omershahzad70.blogspot.com/"]
+loader = UnstructuredURLLoader(urls=urls)
+documents.extend(loader.load())
+
 # Function to load a document using a specific loader
+
+
 def generateDoc(file, loaderType):
     pdf_path = "./docs/" + file
     loader = loaderType(pdf_path)
     documents.extend(loader.load())
+
 
 # Dictionary mapping file extensions to corresponding loader classes
 loaders = {
@@ -42,7 +50,8 @@ text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 documents = text_splitter.split_documents(documents)
 
 # Create a Chroma vector database from the documents using OpenAI embeddings
-vectordb = Chroma.from_documents(documents, embedding=OpenAIEmbeddings(), persist_directory="./data"  )
+vectordb = Chroma.from_documents(
+    documents, embedding=OpenAIEmbeddings(), persist_directory="./cache/data")
 vectordb.persist()
 
 qa_bot = RetrievalQA.from_chain_type(

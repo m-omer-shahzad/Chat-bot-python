@@ -2,6 +2,4 @@
 .venv
 .env
 __pycache__
-data/
-doc_data/
-url_data/
+cache/

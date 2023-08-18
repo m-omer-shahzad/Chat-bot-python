@@ -62,8 +62,8 @@ def print_interaction_status(interaction_type):
 
 def main():
     interaction_type = None  # To track the interaction type
-    url_space_directory = "./url_data"
-    doc_space_directory = "./doc_data"
+    url_space_directory = "./cache/url_data"
+    doc_space_directory = "./cache/doc_data"
     print(f"\n{yellow}-------------------------")
     print('Welcome to the DocBot!')
     print("-------------------------")
