@@ -11,7 +11,7 @@ os.environ["OPENAI_API_KEY"]
 llm = OpenAI(temperature=0)
 
 prompt = PromptTemplate(
-    template="Here is a paragraph:{query}Must include list of Identified Cannotations, enclose each Connotation in array of objects, also include reason explaining why Connotation was identified and impact on receiver against each connotation in your response.\nn",
+    template="Here is a given message:{query}Must include list of Identified Cannotations, enclose each Connotation in array of objects, also include reason explaining why Connotation was identified and impact on receiver against each connotation in your response.\nn",
     input_variables=["query"]
 )
 

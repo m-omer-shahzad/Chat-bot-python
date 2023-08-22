@@ -1,0 +1,5 @@
+{
+  "original_message": "Don't try to chat with fuck off",
+  "revise_message": "\n\nDon't try to chat. Goodbye.",
+  "connotation": "\n\n[\n    {\n        connotation: \"Fuck off\",\n        reason: \"Strong language used to express anger or frustration\",\n        impact: \"The receiver will feel insulted and disrespected\"\n    }\n]"
+}
