@@ -1,6 +1,6 @@
 ## Create a virtual environment
 ```
-    source -m venv env_name
+    python3 -m venv env_name
 ```
 ## Activate the Environment
 ```
