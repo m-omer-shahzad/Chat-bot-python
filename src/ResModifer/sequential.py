@@ -1,6 +1,6 @@
+import json
 import os
 
-import json
 from dotenv import load_dotenv
 from langchain.chains import LLMChain, SequentialChain
 from langchain.llms import OpenAI
@@ -14,7 +14,7 @@ def initialize_llm():
     return llm
 
 def revise_chain(llm):
-    template = "This is the message user enters: {original_message} Do not change the context of the message. Just revise this message and remove the connotations. If this is the greeting message, do not revise the original message make the field empty. If the message is just the alphabet, do not revise the message. Do not include fluff in your response. dont add irrelevant space"
+    template = "This is the message user enters: {original_message}" "Do not change the context of the message." "Just revise this message and remove the connotations." "If this is the greeting message, do not revise the original message make the field empty." "If the message is just the alphabet, do not revise the message." "Do not include fluff in your response. dont add irrelevant space"
 
     promptTemplate = PromptTemplate(input_variables=["original_message"], template=template)
     return LLMChain(llm=llm, prompt=promptTemplate, output_key="revise_message")

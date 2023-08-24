@@ -11,6 +11,7 @@ os.environ["OPENAI_API_KEY"]
 llm = OpenAI(temperature=0)
 
 prompt = PromptTemplate(
+    # template="Here is a message:{query}Is this is a greating message if yes then return yes otherwise no?",
     template="Here is a message:{query}Is this is a greating message if yes then return yes otherwise no?",
     input_variables=["query"]
 )

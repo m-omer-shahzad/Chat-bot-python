@@ -1,5 +1,5 @@
 {
-  "original_message": "Don't try to chat with fuck off",
-  "revise_message": "\n\nDon't try to chat. Goodbye.",
-  "connotation": "\n\n[\n    {\n        connotation: \"Fuck off\",\n        reason: \"Strong language used to express anger or frustration\",\n        impact: \"The receiver will feel insulted and disrespected\"\n    }\n]"
+    "original_message": "Hello, How are you can you shut your mouth ",
+    "revise_message": "\n\nHello, How are you? Please refrain from speaking in a disrespectful manner.",
+    "connotation": "\n\n[\n  {\n    connotation: \"shut your mouth\",\n    reason: \"This phrase is often used to indicate that someone should stop talking.\",\n    impact: \"The receiver may feel insulted or disrespected.\"\n  }\n]"
 }
