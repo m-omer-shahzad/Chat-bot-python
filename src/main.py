@@ -3,7 +3,9 @@ import os
 from dotenv import load_dotenv
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
+from pydantic import BaseModel, Field
 
 
 def initialize_llm():
@@ -14,17 +16,26 @@ def initialize_llm():
 
 llm = initialize_llm()
 
+# salutations output parser
+class salutationParser(BaseModel):
+    is_greeting: bool = Field(
+        description="If the output is yes then return True else return False"
+    )
+
+    def to_dic(self):
+        return self.is_greeting
+
+parser = PydanticOutputParser(pydantic_object=salutationParser)
 
 # Prompt to detect salutation
-def detect_salutation(original_message):
+def detect_salutation(original_message) -> bool:
     prompt = PromptTemplate(
-        template="""Forget all previous instructions and start fresh.\n 
-        Is this a salutation :{query} "Yes" or "No"?""",
+        template="\n{format_instructions}\nHere is a message:{query}Is this is a greating message?",
         input_variables=["query"],
+        partial_variables={"format_instructions": parser.get_format_instructions()},
     )
     llm_chain = LLMChain(llm=llm, prompt=prompt)
-    return llm_chain.run(original_message)
-
+    return parser.parse(llm_chain.run(original_message)).to_dic()
 
 # Prompt to revise message
 def revise_chain(original_message):
@@ -43,7 +54,6 @@ def revise_chain(original_message):
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     return llm_chain.run(original_message)
 
-
 # prompt to list
 def connotation_chain(original_message):
     prompt = PromptTemplate(
@@ -53,12 +63,12 @@ def connotation_chain(original_message):
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     return llm_chain.run(original_message)
 
-
+# Main function
 def main():
     original_message = input("Enter Message: ")
     answer = detect_salutation(original_message)
-
-    if "Yes" in answer:
+    if answer:
+        print("This is Greeting Message")
         print("Message: ", original_message)
     else:
         print(revise_chain(original_message))
