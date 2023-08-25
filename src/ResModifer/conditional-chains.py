@@ -7,10 +7,12 @@ from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from pydantic import BaseModel, Field
 
+
 def initialize_llm():
     load_dotenv()
     os.environ["OPENAI_API_KEY"]
     return ChatOpenAI(temperature=0.0, model_name="gpt-3.5-turbo")
+
 
 llm = initialize_llm()
 
@@ -36,68 +38,59 @@ def detect_salutation(original_message) -> bool:
     return parser.parse(llm_chain.run(original_message)).to_dic()
 
 
-# Revised message output parser
 class revisedMessageParser(BaseModel):
-    revised_message: str = Field(
-        description="When the output is revised and any connotations are eliminated."
-    )
+    revised_message: str = Field(description="if the output is revised and the connotatiosn is removed")
 
     def to_dict(self):
-        return {"Revised_Message": self.revised_message}
-
+        return  self.revised_message
+        
+    
 revisedMessageParsers = PydanticOutputParser(pydantic_object=revisedMessageParser)
 
 # Prompt to revise message
 def revise_chain(original_message):
     prompt = PromptTemplate(
+        # template="""Forget all previous instructions and start fresh.\n 
+        # \n{format_instructions}\nDo not make any message like an email\n
+        # This is the message user enters: {original_message}.\n
+        # [Revised Message] must look like natural conversation(not an email). Do not include Salutation (Greeting) , Closing and Sign-off and fluff. Do not include Sender's Name and Receiver's Name in [Revised Message]\n\n
+        # Just Revised message and remove the connotations.\n
+        # If the original message is just the alphabet, do not Revised the message.\n
+        # Revised message in [Revised Message]\n
+        # Do not return these guidlines\n""",
         template="""
             Prompt: Write a conversational message that revises the given text. Make the revised message sound like a natural conversation, avoiding the use of email-like elements such as greetings, sender's name, and thank-you notes. Ensure that the revised message doesn't contain negative connotations.
             FormateInstructions: {format_instructions}
-            Original Message: {original_message}""",
+            Original Message: {original_message}
+            [Revised Message]""",
+
+    
         input_variables=["original_message"],
-        partial_variables={
-            "format_instructions": revisedMessageParsers.get_format_instructions()
-        },
+        partial_variables={"format_instructions": revisedMessageParsers.get_format_instructions()},
     )
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     return revisedMessageParsers.parse(llm_chain.run(original_message)).to_dict()
 
-# connotation output parser
-class connotationParser(BaseModel):
-    connotation: list = Field(
-        description="The output in the array of objects in which there are three keys of connotation , reason and impact."
-    )
-
-    def to_dic(self):
-        return {"connotations": self.connotation}
-
-connotationParsers = PydanticOutputParser(pydantic_object=connotationParser)
-
-# prompt to list connotation
+# prompt to list
 def connotation_chain(original_message):
     prompt = PromptTemplate(
-        template="""
-            Prompt: Please disregard any prior instructions and approach this task anew.
-            Examine the provided message: {original_message}. Identify any underlying connotations within the message, and provide an explanation for each connotation you identify. Additionally, elucidate how each connotation could potentially influence the recipient. Organize your response using an array of objects. Each object should encompass a title, the reason behind its recognition, and the potential impact on the receiver. Please maintain a succinct and focused response. Do not include connotations with positive sentiment.
-            FormateInstructions: {format_instructions}
-            """,
+        template="Forget all previous instructions and start fresh.\n Analyze the given message: {original_message}, and provide the connotations along with an explanation for each one. For each connotation, include its impact on the receiver. Format your response by enclosing each connotation in an array of objects, each containing the connotation itself, the reason for its identification, and its impact on the receiver. Keep your response concise and focused. and do not return positive connotations",
         input_variables=["original_message"],
-        partial_variables={
-            "format_instructions": connotationParsers.get_format_instructions()
-        },
     )
     llm_chain = LLMChain(llm=llm, prompt=prompt)
-    return connotationParsers.parse(llm_chain.run(original_message)).to_dic()
+    return llm_chain.run(original_message)
 
 # Main function
 def main():
     original_message = input("Enter Message: ")
     answer = detect_salutation(original_message)
     if answer:
-        print("original_Message: ", original_message)
+        print("This is Greeting Message")
+        print("Message: ", original_message)
     else:
         print(revise_chain(original_message))
         print(connotation_chain(original_message))
+
 
 if __name__ == "__main__":
     main()
