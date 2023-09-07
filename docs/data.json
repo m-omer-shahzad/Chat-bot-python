@@ -1,0 +1,56 @@
+{
+    "healthData": [
+      {
+        "date": "2023-08-01",
+        "heartRate": 75,
+        "bloodPressure": {
+          "systolic": 120,
+          "diastolic": 80
+        },
+        "caloriesBurned": 2000,
+        "spo2": 98
+      },
+      {
+        "date": "2023-08-02",
+        "heartRate": 80,
+        "bloodPressure": {
+          "systolic": 122,
+          "diastolic": 82
+        },
+        "caloriesBurned": 2100,
+        "spo2": 97
+      },
+      {
+        "date": "2023-08-03",
+        "heartRate": 78,
+        "bloodPressure": {
+          "systolic": 118,
+          "diastolic": 79
+        },
+        "caloriesBurned": 1950,
+        "spo2": 98
+      },
+      {
+        "date": "2023-08-04",
+        "heartRate": 82,
+        "bloodPressure": {
+          "systolic": 125,
+          "diastolic": 85
+        },
+        "caloriesBurned": 2200,
+        "spo2": 96
+      },
+      {
+        "date": "2023-08-05",
+        "heartRate": 76,
+        "bloodPressure": {
+          "systolic": 120,
+          "diastolic": 81
+        },
+        "caloriesBurned": 2050,
+        "spo2": 99
+      }
+    ]
+  }
+  
+
